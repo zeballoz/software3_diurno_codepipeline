@@ -11,12 +11,12 @@
     <ui:define name="content">
 
         <p:card styleClass="card"
-                style="margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 2%">
+                style="margin-left: 30%; margin-right: 30%; margin-top: 2%; height: 545px">
             <f:facet name="title" >
-                <font color="#34495E" > ¡Regístrese!</font>
+                <font color="#34495E" > Registro de usuario</font>
             </f:facet>
 
-            <p>Hola! en el siguiente formulario puedes indicarnos tus datos para poder registrarte y poder disfrutar de todo lo que te ofrecemos.</p>
+            <p>Hola! en el siguiente formulario puedes indicar los datos del usuario que deseas registrar.</p>
 
             <h:form>
                 <h:panelGrid columns="2" cellpadding="5" width="100%">
@@ -59,15 +59,16 @@
 
                 </h:panelGrid>
 
-                <div class="form-group row justify-content-center" style="margin: 5%">
+                <div class="form-group row justify-content-center" style="margin: 3%;margin-left: 8%;margin-top: 40px">
+                    <div class="col" >
+                        <p:button href="/index.xhtml" value="Volver"  style="width: 90%;background: #34495E"/>
+                    </div>
                     <div class="col">
                         <p:commandButton action="#{administradorBean.registrarUsuario}" value="Crear"
                                          update="@form"
                                          style="background: #34495E;width: 90%"/>
                     </div>
-                    <div class="col">
-                        <p:button href="/index.xhtml" value="Volver"  style="width: 90%;background: #34495E"/>
-                    </div>
+
                 </div>
                 <p:growl showDetail="true"/>
             </h:form>

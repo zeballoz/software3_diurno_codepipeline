@@ -8,42 +8,111 @@
 
 <ui:composition template="/WEB-INF/plantilla.xhtml">
 
-    <ui:define name="title">Usuario | Perfil</ui:define>
+    <ui:define name="title">Adminsitrador | Perfil</ui:define>
     <ui:define name="content">
 
         <div style="margin: 2% 5%">
-            <h1>¡Hola!</h1>
-            <h2>#{administradorBean.administrador.nombre}</h2>
+            <h1>¡Hola #{administradorBean.administrador.nombre}!</h1>
             <p:divider></p:divider>
-            <h4>Email:  #{administradorBean.administrador.email} </h4>
-            <br></br>
-            <h4>Nickname:  #{administradorBean.administrador.nickname} </h4>
+
         </div>
 
         <div class="card" style="margin: 2% 5%">
 
-            <h2 style="margin-left: 1%">Reportes:</h2>
+            <h1 style="margin: 2% 5%">Administradores registrados</h1>
 
-            <div class="row" style="margin: 1%">
-                <div class="col">
-                    <h5>Diagrama de barra</h5>
-                        <h:panelGrid id="barLugaresCiudad">
-                            <p:barChart model="#{administradorBean.barLugaresCiudad}" style="width: 800px; height: 400px;" rendered="#{administradorBean.barLugaresCiudad != null}"/>
-                        </h:panelGrid>
 
-                    <h:panelGrid id="barLugaresCalificacion">
-                        <p:barChart model="#{administradorBean.barLugaresCalificacion}" style="width: 800px; height: 400px;" rendered="#{administradorBean.barLugaresCalificacion != null}"/>
-                    </h:panelGrid>
-                </div>
+            <p:outputPanel id="administradores" style="margin: 1% 5%">
+                <p:dataTable value="#{administradorBean.administradoresRegistrados}" var="admin" id="adminTable">
 
-                <div class="col">
-                    <h5>Diagrama de dona</h5>
-                        <h:panelGrid id="pieLugaresTipo">
-                            <p:chart type="pie" model="#{administradorBean.pieLugaresTipo}" style="width: 400px; height: 400px;" rendered="#{administradorBean.pieLugaresTipo != null}"/>
-                        </h:panelGrid>
-                </div>
-            </div>
+                    <p:column headerText="Nombre" >
+                        <h:outputText value="#{admin.nombre}"/>
+                    </p:column>
 
+                    <p:column headerText="Cedula">
+                        <f:facet name="header">
+                            <h:outputText value="Cedula"/>
+                        </f:facet>
+                        <h:outputText value="#{admin.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Correo">
+                        <f:facet name="header">
+                            <h:outputText value="Correo"/>
+                        </f:facet>
+                        <h:outputText value="#{admin.email}"/>
+                    </p:column>
+
+                    <p:column headerText="Telefono" >
+                        <h:outputText value="#{admin.telefono}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:outputPanel>
+        </div>
+
+
+        <div class="card" style="margin: 2% 5%">
+
+            <h1 style="margin: 2% 5%">Usuarios registrados</h1>
+
+
+            <p:outputPanel id="usuarios" style="margin: 1% 5%">
+                <p:dataTable value="#{administradorBean.usuariosRegistrados}" var="usuario" id="usuariosTable">
+
+                    <p:column headerText="Nombre" >
+                        <h:outputText value="#{usuario.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Cedula">
+                        <f:facet name="header">
+                            <h:outputText value="Cedula"/>
+                        </f:facet>
+                        <h:outputText value="#{usuario.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Correo">
+                        <f:facet name="header">
+                            <h:outputText value="Correo"/>
+                        </f:facet>
+                        <h:outputText value="#{usuario.email}"/>
+                    </p:column>
+
+                    <p:column headerText="Telefono" >
+                        <h:outputText value="#{usuario.telefono}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:outputPanel>
+        </div>
+
+        <div class="card" style="margin: 2% 5%">
+            <h1 style="margin: 2% 5%">Libros registrados</h1>
+
+            <p:outputPanel id="libros" style="margin: 1% 5%">
+                <p:dataTable value="#{administradorBean.librosRegistrados}" var="libro" id="tableLibros" >
+
+                    <p:column headerText="Titulo">
+                        <h:outputText value="#{libro.titulo}"/>
+                    </p:column>
+
+                    <p:column headerText="Isbn">
+                        <h:outputText value="#{libro.isbn}"/>
+                    </p:column>
+
+                    <p:column headerText="Autor">
+                        <f:facet name="header">
+                            <h:outputText value="Autor"/>
+                        </f:facet>
+                        <h:outputText value="#{libro.autor}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha de publicación">
+                        <h:outputText value="#{libro.fechaPublicacion}"/>
+                    </p:column>
+
+                </p:dataTable >
+            </p:outputPanel>
         </div>
 
     </ui:define>

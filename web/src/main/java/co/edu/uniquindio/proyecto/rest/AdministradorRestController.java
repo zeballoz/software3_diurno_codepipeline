@@ -50,7 +50,7 @@ public class AdministradorRestController {
     public ResponseEntity<Mensaje> eliminar(@PathVariable(name="email") String email){
 
         try {
-            administradorServicio.eliminarAdministrador(email);
+
             return ResponseEntity.status(200).body(new Mensaje("El administrador se elimino correctamente"));
         }catch (Exception e){
             return ResponseEntity.status(500).body(new Mensaje(e.getMessage()));

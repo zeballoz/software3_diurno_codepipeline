@@ -24,6 +24,17 @@ public class Administrador extends Persona implements Serializable {
         super(id, nombre, telefono, password, email);
     }
 
+
+    @ManyToOne
+    private Administrador administrador;
+
+
+    @OneToMany(mappedBy = "administrador")
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Administrador> administradores;
+
+
     //================================= RELACION CON LA ENTIDAD LIBRO =================================//
     @OneToMany(mappedBy = "administrador")
     @ToString.Exclude

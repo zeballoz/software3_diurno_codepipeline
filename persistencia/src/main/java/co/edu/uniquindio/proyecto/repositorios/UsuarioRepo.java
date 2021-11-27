@@ -27,11 +27,15 @@ public interface UsuarioRepo extends JpaRepository<Usuario,String> {
     @Query("select u from Usuario u where u.email = :email and u.nombre= :nombre")
     Usuario obtenerUsuario( @Param("email")String email ,@Param("nombre")String nombre);
 
+    @Query("select u from Usuario u where u.id =:cedula and u.numeroTarjeta =:numeroTarjeta")
+    Usuario obtenerUsuarioPago(String cedula,String numeroTarjeta);
 
     Usuario findByEmailAndPassword(String email,String password);
 
-
     Usuario findByEmail(String email);
+
+    @Query("select u from Usuario u where u.id =:cedula")
+    Usuario obtenerUsuarioCedula(String cedula);
 
     List<Usuario> findByNombre(String nombre);
 
@@ -50,5 +54,8 @@ public interface UsuarioRepo extends JpaRepository<Usuario,String> {
 
     @Query("select u from Usuario u where u.email like concat('%',:dominio,'%')")
     List<Usuario> obtenerUsuariosDeDominio2(String dominio);
+
+    @Query("select u from Usuario u where u.administrador.email =:emailAdm")
+    List<Usuario> obtenerUsuriosAdmin(String emailAdm);
 
 }

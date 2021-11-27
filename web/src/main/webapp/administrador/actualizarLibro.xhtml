@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+
+
+    <ui:define name="title">Usuario | Actualizar</ui:define>
+    <ui:define name="content">
+
+        <p:card styleClass="card"
+                style="margin-left: 30%; margin-right: 30%; margin-top: 2%; height: 700px">
+            <f:facet name="title">
+                <font color="#34495E" >Actualización de libros</font>
+            </f:facet>
+
+            <p>Hola! en el siguiente formulario puedes actualizar los datos de los libros registrados.</p>
+
+            <h:form>
+
+                <p>Ingresa el isbn del libro que deseas modificar.</p>
+
+                <h:panelGrid columns="2" cellpadding="5" width="100%">
+
+                    <p:outputLabel for="isbn_libro" value="Isbn:"/>
+                    <p:inputText id="isbn_libro" value="#{libroBean.libro.isbn}" style="width: 100%"
+                                 required="true"
+                                 requiredMessage="El isbn del libro es obligatorio"/>
+
+                    <p:outputLabel for="titulo_libro" value="Titulo:"/>
+                    <p:inputText id="titulo_libro" value="#{libroBean.libro.titulo}" style="width: 100%"
+                                 required="true"
+                                 requiredMessage="El nombre del libro es obligatorio"/>
+
+                    <p:outputLabel for="autor_libro" value="Autor:"/>
+                    <p:inputText id="autor_libro" value="#{libroBean.libro.autor}" style="width: 100%"
+                                 required="true"
+                                 requiredMessage="El nombre del libro es obligatorio"/>
+
+                    <p:outputLabel for="fecha_libro" value="Fecha de publicación:"/>
+                    <p:calendar styleClass="dateTimeField" id="fecha_libro" value="#{libroBean.fechaLibro}" style="width: 100%"
+                                required="true"
+                                requiredMessage="La fecha de publicacion es obligatorio"/>
+
+                    <p:outputLabel for="descripcion_libro" value="Descripción:"/>
+                    <p:inputTextarea styleClass="form-control" id="descripcion_libro" value="#{libroBean.libro.descripcion}" style="width: 100%;resize: none"
+                                     required="true" autoResize="none"
+                                     requiredMessage="La descripción del libro es obligatoria" rows="3"/>
+
+                    <p:outputLabel for="imagenes_libro" value="Imagenes: "/>
+                    <p:fileUpload id="imagenes_libro" listener="#{libroBean.subirImagenes}" mode="advanced"
+                                  multiple="true" sizeLimit="1000000" fileLimit="5"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" skinSimple="true"/>
+
+
+                </h:panelGrid>
+                <div class="form-group row justify-content-center" style="margin: 5%">
+
+                    <div class="col">
+                        <p:button href="/index.xhtml" value="Volver" style="width: 90%;background: #34495E"/>
+                    </div>
+
+                    <div class="col">
+                        <p:commandButton action="#{libroBean.actualizarLibro(libroBean.fechaLibro)}" value="Actualizar"
+                                         update="@form"
+                                         style="background: #34495E;width: 90%"/>
+                    </div>
+                </div>
+                <p:growl showDetail="true"/>
+            </h:form>
+
+        </p:card>
+    </ui:define>
+</ui:composition>
+
+</html>

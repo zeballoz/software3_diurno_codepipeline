@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+
+
+    <ui:define name="title">Libro | Eliminar</ui:define>
+    <ui:define name="content">
+
+        <p:card styleClass="card"
+                style="height:300px;margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 1%">
+            <f:facet name="title">
+                <font color="#34495E" >Eliminación de libro</font>
+            </f:facet>
+
+            <p>Por favor ingresa el código del libro que deseas eliminar.</p>
+
+            <h:form>
+                <p:outputLabel for="isbn_libro" value="Código:"/>
+                <p:inputText id="isbn_libro" value="#{libroBean.libro.id}" style="width: 100%"
+                             required="true"
+                             requiredMessage="Ups! olvidaste el isbn"/>
+                <br></br>
+                <br></br>
+
+                <div class="form-group row justify-content-center" style="margin: 3%;margin-left: 8%;margin-top: 20px">
+                    <div class="col" >
+                        <p:button href="/index.xhtml" value="Volver" style="width: 90%;background: #34495E"/>
+                    </div>
+                    <div class="col">
+                        <p:commandButton action="#{libroBean.eliminarLibro}" value="Eliminar"
+                                         update="@form"
+                                         style="width: 90%;background: #34495E"/>
+                    </div>
+                </div>
+                <p:growl showDetail="true"/>
+            </h:form>
+
+        </p:card>
+
+    </ui:define>
+</ui:composition>
+</html>

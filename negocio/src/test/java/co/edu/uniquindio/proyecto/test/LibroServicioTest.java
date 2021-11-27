@@ -35,7 +35,7 @@ public class LibroServicioTest {
 
             Administrador administrador= administradorServicio.obtenerAdministrador("5");
 
-            Libro libro = new Libro(1234,"Cien años de soledad",true,"Gabriel Garcia Marquez",fechaPublicacion);
+            Libro libro = new Libro();
             libro.setAdministrador(administrador);
 
             Libro libroRegistrado = libroServicio.registrarLibro(libro);

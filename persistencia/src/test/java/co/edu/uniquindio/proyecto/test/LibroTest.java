@@ -40,7 +40,7 @@ public class LibroTest {
 
             Administrador administrador = administradorRepo.findById("5").orElse(null);
 
-            Libro libro = new Libro(1234,"Cien años de soledad",true,"Gabriel Garcia Marquez",fechaPublicacion);
+            Libro libro = new Libro("1234","Cien años de soledad",true,"Gabriel Garcia Marquez","","x");
 
             libro.setAdministrador(administrador);
 
@@ -58,11 +58,11 @@ public class LibroTest {
     @Sql("classpath:libro.sql")
     public void eliminarLugarTest() {
 
-            Libro libro= libroRepo.findByIsbn(12345);
+            Libro libro= libroRepo.findByIsbn("12345");
 
             libroRepo.delete(libro);
 
-            Libro libroBorrado = libroRepo.findById(12345).orElse(null);
+            Libro libroBorrado = libroRepo.findById(12345);
 
             Assertions.assertNull(libroBorrado);
 
@@ -75,12 +75,12 @@ public class LibroTest {
 
 
 
-            Libro libroGuardado = libroRepo.findByIsbn(12345);
+            Libro libroGuardado = libroRepo.findByIsbn("12345");
 
             libroGuardado.setEstado(false);
             libroRepo.save(libroGuardado);
 
-            Libro libroBuscado= libroRepo.findById(12345).orElse(null);
+            Libro libroBuscado= libroRepo.findById(12345);
 
             Assertions.assertEquals(false,libroBuscado.getEstado());
 

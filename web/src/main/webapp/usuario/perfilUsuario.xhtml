@@ -2,7 +2,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:spring="http://www.springframework.org/tags"
       xml:lang="en" lang="en">
 
 
@@ -11,135 +11,203 @@
     <ui:define name="title">Usuario | Perfil</ui:define>
     <ui:define name="content">
 
-            <div style="margin: 2% 5%">
-                <h1>¡Hola!</h1>
-                <h2> #{usuarioBean.usuarioAux.nombre} </h2>
-                <p:divider></p:divider>
-                <h4>Email:  #{usuarioBean.usuarioAux.email} </h4>
-                <br></br>
-                <h4>Nickname:  #{usuarioBean.usuarioAux.nickname} </h4>
-                <br></br>
-                <h4>Ciudad:  #{usuarioBean.usuarioAux.ciudad.nombre} </h4>
-            </div>
-
-            <div class="card" style="margin: 2% 5%">
-                <h1 style="margin: 2% 5%">Comentarios que faltan por responder</h1>
-
-                <p:outputPanel id="sin_respuesta" style="margin: 2% 5%">
-
-                    <h:form id="form">
-
-                    <p:dataTable value="#{usuarioBean.comentariosSR}" var="comentario" id="sin_respuestaTable">
-
-                        <p:column headerText="Usuario">
-                            <h:outputText value="#{comentario.usuario.nombre}"/>
-                        </p:column>
-
-                        <p:column headerText="Comentario">
-                            <f:facet name="header">
-                                <h:outputText value="Comentario"/>
-                            </f:facet>
-                            <h:outputText value="#{comentario.comentario}"/>
-                        </p:column>
-
-                        <p:column headerText="Fecha">
-                            <f:facet name="header">
-                                <h:outputText value="Fecha"/>
-                            </f:facet>
-                            <h:outputText value="#{comentario.fechaComentario}"/>
-                        </p:column>
-
-                        <p:column headerText="Responder">
-                            <p:commandButton action="#{usuarioBean.responder(comentario.id)}"
-                                             onclick="PF('dlg3').show()" update="favoritosTable"
-                                             icon="pi pi-send" styleClass="rounded-button ui-button-flat"/>
-                        </p:column>
-
-                        <p:column headerText="Eliminar">
-                            <p:commandButton action="#{usuarioBean.eliminarComentario(comentario.id)}"
-                                             icon="pi pi-trash" update="sin_respuestaTable,favoritosTable"
-                                             styleClass="rounded-button ui-button-flat"/>
-                        </p:column>
-                    </p:dataTable>
-                    </h:form>
-                </p:outputPanel>
-            </div>
+        <div style="margin: 2% 5%">
+            <h1>¡Hola #{usuarioBean.usuario.nombre}!</h1>
+            <p:divider></p:divider>
+        </div>
 
 
         <div class="card" style="margin: 2% 5%">
-            <h1 style="margin: 2% 5%">Estos son tus lugares favoritos </h1>
+            <h1 style="margin: 2% 5%">Reservas activas</h1>
+            <p:outputPanel id="activas" style="margin: 1% 5%">
+                <p:dataTable value="#{usuarioBean.reservasActivas}" var="reserva" id="activasTable">
 
-            <p:outputPanel id="favoritos" style="margin: 2% 5%">
-                    <p:dataTable value="#{usuarioBean.lugaresFavoritosUsuario}" var="lugar" id="favoritosTable">
-                        <p:column headerText="Lugar">
-                            <h:outputText value="#{lugar.nombre}"/>
-                        </p:column>
+                    <p:column headerText="Código" >
+                        <h:outputText value="#{reserva.id}"/>
+                    </p:column>
 
-                        <p:column headerText="Descripción">
-                            <f:facet name="header">
-                                <h:outputText value="Descripción"/>
-                            </f:facet>
-                            <h:outputText value="#{lugar.descripcion}"/>
-                        </p:column>
+                    <p:column headerText="Libro" >
+                        <h:outputText value="#{reserva.libro.titulo}"/>
+                    </p:column>
 
-                        <p:column headerText="Fecha">
-                            <f:facet name="header">
-                                <h:outputText value="Fecha"/>
-                            </f:facet>
-                            <h:outputText value="#{lugar.fechaCreacion}"/>
-                        </p:column>
-                    </p:dataTable>
+                    <p:column headerText="Fecha de prestamo">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de prestamo"/>
+                        </f:facet>
+                        <h:outputText value="#{reserva.fechaPrestamo}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha maxima de entrega">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha maxima de entrega"/>
+                        </f:facet>
+                        <h:outputText value="#{reserva.fechaFinPrestamo}"/>
+                    </p:column>
+
+                    <p:column headerText="Devolución">
+                        <p:commandButton action="#{usuarioBean.metodos(reserva.id,reserva.libro.id)}"
+                                         update="activasTable,reservasHTable"
+                                         value="Devolver"
+                                         icon="pi pi-times"
+                                         style="background: #34495E" />
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>
+        </div>
+
+        <div class="card" style="margin: 2% 5%">
+            <h1 style="margin: 2% 5%">Historial de reservas</h1>
+            <p:outputPanel id="reservasH" style="margin: 1% 5%">
+                <p:dataTable value="#{usuarioBean.historialReservas}" var="reserva" id="reservasHTable">
+
+                    <p:column headerText="Código" >
+                        <h:outputText value="#{reserva.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Libro" >
+                        <h:outputText value="#{reserva.libro.titulo}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha de prestamo">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de prestamo"/>
+                        </f:facet>
+                        <h:outputText value="#{reserva.fechaPrestamo}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha de devolución">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de devolución"/>
+                        </f:facet>
+                        <h:outputText value="#{reserva.fechaDevolucion}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:outputPanel>
+        </div>
+
+        <div class="card" style="margin: 2% 5%">
+            <h1 style="margin: 2% 5%">Multas</h1>
+            <p:outputPanel id="multas" style="margin: 1% 5%">
+                <p:dataTable value="#{usuarioBean.multas}" var="multa" id="multasTable">
+
+                    <p:column headerText="Código" >
+                        <h:outputText value="#{multa.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Precio" >
+                        <h:outputText value="#{multa.precioMulta}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha de multa">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha de multa"/>
+                        </f:facet>
+                        <h:outputText value="#{multa.fechaMulta}"/>
+                    </p:column>
+
+                    <p:column headerText="Pagar multa">
+                        <p:commandButton rendered="#{seguridadBean.autenticado}" styleClass="ui-button-raised ui-button" value="Pagar"
+                                         onclick="PF('dlg1').show()"
+                                         style="background: #34495E "/>
+                    </p:column>
+                </p:dataTable>
             </p:outputPanel>
         </div>
 
 
+        <h:form>
+            <p:dialog id="dialogo" header="Pago" widgetVar="dlg1" Height="400px" width="40%" showEffect="fade"
+                      closeOnEscape="true" rendered="#{seguridadBean.autenticado}">
+                <div class="row">
+                    <div class="col-md-8">
 
-        <p:dialog id="dialogo" header="Respuesta" widgetVar="dlg3" Height="400px" width="40%" showEffect="fade"
-                  closeOnEscape="true">
-            <h:form>
+                        <p:outputLabel for="cedula_usuario" value="Cedula:"/>
+                        <p:inputText id="cedula_usuario" value="#{usuarioBean.usuarioAux.id}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="La cedula de la tarjeta es obligatoria"/>
+                        <br></br>
+                        <p:outputLabel for="codigo_multa" value="Codigo multa:"/>
+                        <p:inputText id="codigo_multa" value="#{usuarioBean.multa.id}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="El código de la multa es obligatorio"/>
+                        <br></br>
+                        <p:outputLabel for="tarjeta_usuario" value="Tarjeta"/>
+                        <p:inputText id="tarjeta_usuario" value="#{usuarioBean.usuario.numeroTarjeta}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="El número de la tarjeta es obligatorio"/>
 
-                <h5>Pon tu respuesta:</h5>
-                <p:inputTextarea value="#{usuarioBean.comentario.respuesta}" rows="3" cols="65"/>
+                    </div>
 
-                <div style="margin-top: 5%;margin-left: 25%">
-                    <p:commandButton style="min-width: 30%" value="Responder"
-                                     action="#{usuarioBean.responderComentario}" onclick="PF('dlg3').hide()" update="form:sin_respuestaTable,favoritosTable"
-                                     styleClass="ui-button-raised ui-button-success ui-button-flat"
-                                     icon="pi pi-sign-in" iconPos="left"/>
-
-                    <p:commandButton style="min-width: 30%; margin-left: 5%" value="Cancelar"
-                                     styleClass="ui-button-raised ui-button-secondary ui-button-flat" update="@form"/>
-                    <p:growl showDetail="true"/>
-                </div>
-            </h:form>
-        </p:dialog>
-
-
-        <div style="margin: 2% 5%">
-            <h2>Tus lugares!</h2>
-            <h6>Estos son los lugares creados por tí</h6>
-            <p:carousel value="#{usuarioBean.lugaresUsuario}" var="lugar" responsive="true"
-                        itemStyle="text-align:center">
-                <div class="product">
-                    <div class="product-grid-item p-p-5">
-                        <div class="product-grid-item-top">
-                            <div class="product-name"><h2>#{lugar.nombre}</h2></div>
-                            <div>
-                                <i class="pi pi-map-marker product-category-icon"/>
-                                <span class="product-category">#{lugar.tipo.nombre}</span>
-                            </div>
-                        </div>
-                        <div class="product-grid-item-content" style="margin: 5%">
-                            <img src="/uploads/#{lugar.imagenPrincipal}" class="card-img-top" alt="..." height="300"/>
-                            <div class="product-description">#{lugar.descripcion}</div>
-                            <p:commandButton value="Ver detalle" action="#{inicioBean.irADetalle(lugar.id)}"
-                                             styleClass="ui-button-raised" icon="pi pi-arrow-right"
-                                             iconPos="right"/>
+                    <div class="col-2">
+                        <div class="fotox">
+                            <img src="${pageContext.request.contextPath}/resources/img/tarjeta-de-credito%20(1).png" alt=""
+                                 style="margin-top: 60%"/>
                         </div>
                     </div>
                 </div>
-            </p:carousel>
-        </div>
+
+
+                <f:facet name="footer">
+                    <p:commandButton style="min-width: 30%" value="Adquirir" action="#{usuarioBean.metod}"
+                                     styleClass="ui-button-raised ui-button-success ui-button-flat"
+                                     update="@form" />
+
+                    <p:commandButton style="min-width: 30%" value="Registrar tarjeta"
+                                     styleClass="ui-button-raised ui-button-secondary ui-button-flat" update="@form"
+                                     onclick="PF('dlg2').show()"/>
+                    <p:growl showDetail="true"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+        <h:form>
+            <p:dialog header="Registra tu tarjeta" widgetVar="dlg2" Height="400px" width="40%" showEffect="fade"
+                      closeOnEscape="true" >
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <p:outputLabel for="numero_tarjeta" value="Número:" />
+                        <p:inputText id="numero_tarjeta" value="#{usuarioBean.usuario.numeroTarjeta}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="El numero de la tarjeta es obligatorio"/>
+                        <br></br>
+                        <p:outputLabel for="fecha_tarjeta" value="Fecha:"/>
+                        <p:inputText id="fecha_tarjeta" value="#{usuarioBean.usuario.fechatarjeta}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="La fecha de la tarjeta es obligatoria"/>
+                        <br></br>
+                        <p:outputLabel for="codigo_tarjeta" value="Codigo:"/>
+                        <p:inputText id="codigo_tarjeta" value="#{usuarioBean.usuario.codigoTarjeta}" styleClass="p-d-block"
+                                     style="width: 100%"
+                                     required="true"
+                                     requiredMessage="El código de la tarejeta es obligatoria"/>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="fotox">
+                            <img src="${pageContext.request.contextPath}/resources/img/tarjeta-de-credito%20(1).png" alt=""
+                                 style="margin-top: 60%"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div align="center">
+                    <f:facet name="footer" >
+                        <p:commandButton style="min-width: 30%" value="Registrar tarjeta" action="#{usuarioBean.registrarTarjetaUsuario}"
+                                         styleClass="ui-button-raised ui-button-success ui-button-flat"
+                                         update="@form"/>
+                        <p:growl showDetail="true" />
+                    </f:facet>
+                </div>
+            </p:dialog>
+        </h:form>
+
 
     </ui:define>
 </ui:composition>

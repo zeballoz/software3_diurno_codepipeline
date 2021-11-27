@@ -2,6 +2,8 @@ package co.edu.uniquindio.proyecto.servicios;
 
 import co.edu.uniquindio.proyecto.entidades.*;
 import co.edu.uniquindio.proyecto.repositorios.AdministradorRepo;
+import co.edu.uniquindio.proyecto.repositorios.LibroRepo;
+import co.edu.uniquindio.proyecto.repositorios.UsuarioRepo;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +12,13 @@ import java.util.Optional;
 public class AdministradorServicioImpl implements AdministradorServicio{
 
     private final AdministradorRepo administradorRepo;
+    private final UsuarioRepo usuarioRepo;
+    private final LibroRepo libroRepo;
 
-    public AdministradorServicioImpl(AdministradorRepo administradorRepo) {
+    public AdministradorServicioImpl(AdministradorRepo administradorRepo, UsuarioRepo usuarioRepo, LibroRepo libroRepo) {
         this.administradorRepo = administradorRepo;
+        this.usuarioRepo = usuarioRepo;
+        this.libroRepo = libroRepo;
     }
 
     public boolean estaDisponible(String email){
@@ -48,28 +54,33 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     }
 
     @Override
-    public void actualizarAdministrador(Administrador a,String email, String password) throws Exception {
+    public void actualizarAdministrador(String id,Administrador administrador) throws Exception {
 
-        Administrador administradorObtenido = obtenerEmailPassword(email,password);
+        try {
+            Administrador administradorEncontrado = obtenerAdministrador(id);
 
+            if (administradorEncontrado!=null){
 
-        if(administradorObtenido!= null){
-            administradorObtenido.setId(a.getId());
-            administradorObtenido.setEmail(a.getEmail());
-            administradorObtenido.setNombre(a.getNombre());
-            administradorObtenido.setPassword(a.getPassword());
-            administradorObtenido.setTelefono(a.getTelefono());
+                administradorEncontrado.setNombre(administrador.getNombre());
+                administradorEncontrado.setPassword(administrador.getPassword());
+                administradorEncontrado.setTelefono(administrador.getTelefono());
+                administradorEncontrado.setEmail(administrador.getEmail());
 
-            administradorRepo.save(administradorObtenido);
+                administradorRepo.save(administradorEncontrado);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void eliminarAdministrador(String email) throws Exception {
-        Administrador administradorEncontrado = obtenerAdministradorEmail(email);
+    public void eliminarAdministrador(String email,String password) throws Exception {
+
+        Administrador administradorEncontrado = obtenerEmailPassword(email,password);
 
         if (administradorEncontrado  != null){
-           administradorRepo.delete(administradorEncontrado );
+            administradorRepo.delete(administradorEncontrado );
         } else {
             throw new Exception("El administrador no ha sido encontrado");
         }
@@ -100,12 +111,12 @@ public class AdministradorServicioImpl implements AdministradorServicio{
 
 
     @Override
-    public void actualizar(String id,Administrador a){
+    public void actualizar(String id,Administrador a) {
 
         try {
             Administrador administradorEncontrado = obtenerAdministrador(id);
 
-            if (administradorEncontrado!=null){
+            if (administradorEncontrado != null) {
 
                 administradorEncontrado.setNombre(a.getNombre());
                 administradorEncontrado.setPassword(a.getPassword());
@@ -118,8 +129,8 @@ public class AdministradorServicioImpl implements AdministradorServicio{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 
     @Override
     public List<Administrador> listarAdministradores() {
@@ -138,4 +149,32 @@ public class AdministradorServicioImpl implements AdministradorServicio{
 
         return administrador;
     }
+
+    @Override
+    public List<Usuario> obtenerUsuariosRegistrados(String emailAdm){
+
+        List<Usuario> usuariosRegistrados = usuarioRepo.obtenerUsuriosAdmin(emailAdm);
+
+        return usuariosRegistrados;
+
+    }
+
+    @Override
+    public List<Administrador> obtenerAdminsRegistrados(String emailAdm){
+
+        List<Administrador> adminsRegistrados = administradorRepo.obtenerAdministradoresAdmin(emailAdm);
+
+        return adminsRegistrados;
+
+    }
+
+    @Override
+    public List<Libro> obtenerLibrosRegistrados(String emailAdm)  {
+
+        List<Libro> librosRegistrados = libroRepo.obtenerLibrosAdmin(emailAdm);
+
+        return librosRegistrados;
+    }
+
+
 }

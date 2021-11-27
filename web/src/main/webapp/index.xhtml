@@ -18,33 +18,59 @@
             <br></br>
             <h1 style="margin-left: 5%"> <font color="#34495E" >Biblioteca-SAD</font></h1>
             <br></br>
+            <p style="margin-left: 5%"><font face="tahoma" color="#34495E"> Consulta el libro que te interese</font></p>
 
             <div class="d-flex" style="">
-                <h:form class="d-flex me-2" style="margin: 2% 5%">
+                <h:form class="d-flex me-2" style="margin: 2% 5%;margin-top: -10px">
                     <p:inputText style="margin-right: 20px; width: 990px" styleClass="form-control me-2 input-search"
-                                 placeholder="Ingrese el libro a buscar"
-                                 />
+                                 placeholder="Ingrese el nombre del libro a buscar"
+                                 value="#{busquedaBean.busqueda}"
+                    />
                     <p:commandButton style="margin-left: 20px;background: #34495E" styleClass="btn btn-outline-light btn-buscar" value="Busqueda"
-                                     action="#"/>
+                                     action="#{busquedaBean.buscar}"/>
                 </h:form>
             </div>
             <br></br>
         </div>
 
-        <div>
+        <p:card style="text-align: justify;margin-left: 60px; width: 91%;height: 180px; background: #5D6D7E ">
+
+            <div class="row">
+
+                <div class="col-lg-2" style="margin-left: 5%">
+                    <img src="resources/img/biblioteca.png" alt=""/>
+                </div>
+
+                <div class="col-lg-8" style="display:block;text-align: center;margin-top: 40px">
+                    <h4 > <font size="4" color="#FFFFFF" face="tahoma">
+                        Explora nuestra biblioteca biblioteca, en la cual encontraras una gran colección de libros referentes a distintas areas del conocimientos
+                    </font>
+                    </h4>
+
+                </div>
+            </div>
+
+        </p:card>
+
+        <div style="margin: 2% 5%">
             <h:form id="form">
-                <p:carousel value="" var="libro" responsive="true"
-                            itemStyle="text-align:center" style="margin: 2% 5%">
+                <p:carousel value="#{inicioBean.libros}" var="libro" responsive="true"
+                            itemStyle="text-align:center">
                     <div class="product">
                         <div class="product-grid-item p-p-5">
                             <div class="product-grid-item-top">
-
+                                <div class="product-name"><h2>#{libro.titulo}</h2></div>
+                                <div>
+                                    <span class="product-category">#{libro.autor}</span>
+                                </div>
                             </div>
                             <div class="product-grid-item-content" style="margin: 5%">
-                                <img src="resources/img/libro.png" class="card-img-top" alt="..."
+                                <img src="/uploads/#{libro.imagenPrincipal}" class="card-img-top" alt="..."
                                      height="300"/>
                                 <br></br>
-                                <br></br>
+                                <p:commandButton value="Ver detalle" style="margin-top: 10px;background: #34495E" action="#{inicioBean.irADetalle(libro.isbn)}"
+                                                 styleClass="ui-button-raised" icon="pi pi-arrow-right"
+                                                 iconPos="right"/>
                             </div>
                         </div>
                     </div>

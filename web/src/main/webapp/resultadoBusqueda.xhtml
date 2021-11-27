@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="title">Libro | Busqueda</ui:define>
+    <ui:define name="content">
+
+        <div style="margin: 2% 5%">
+            <h1 style="text-align: center"> <font color="#34495E" >Resultados de busqueda </font></h1>
+            <p:divider></p:divider>
+        </div>
+
+        <div class="row" style="margin-left: 27%">
+
+            <div class="col">
+                <h:form id="form">
+                <p:carousel id="carusel" value="#{busquedaBean.libros}" var="libro"
+                            itemStyle="text-align:center" numVisible="1" easing="easeOutBounce"
+                            style="width: 500px;display: block; margin: auto;margin: 5%" circular="true">
+                    <div class="product">
+                        <div class="product-grid-item p-p-5">
+                            <div class="product-grid-item-content" style="margin: 5%">
+                                <div class="product-name"> <h2>#{libro.titulo}</h2></div>
+                                <img src="/uploads/#{libro.imagenPrincipal}" class="card-img-top" alt="..."
+                                     height="300"/>
+
+                                <p:commandButton value="Ver detalle" style="margin-top: 20px;background: #34495E" action="#{inicioBean.irADetalle(libro.isbn)}"
+                                                 styleClass="ui-button-raised" icon="pi pi-arrow-right"
+                                                 iconPos="right"/>
+                            </div>
+                        </div>
+                    </div>
+                </p:carousel>
+                </h:form>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+
+    <ui:define name="title">Administrador | Eliminar</ui:define>
+    <ui:define name="content">
+
+        <p:card styleClass="card"
+                style="height:410px;margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 1%">
+            <f:facet name="title">
+                <font color="#34495E" >Eliminación de administrador</font>
+            </f:facet>
+
+            <p>Por favor ingresa el email y contraseña del administrador que deseas eliminar.</p>
+
+            <h:form>
+                <p:outputLabel for="email_usuario" value="Email:"/>
+                <p:inputText id="email_usuario" value="#{administradorBean.administradorAux.email}" style="width: 100%"
+                             required="true"
+                             requiredMessage="Ups! olvidaste el email"/>
+                <br></br>
+                <br></br>
+                <p:outputLabel for="contrasenia_usuario" value="Contraseña:"/>
+                <p:password id="contrasenia_usuario" value="#{administradorBean.administradorAux.password}" feedback="true"
+                            promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                            goodLabel="Buena" strongLabel="Fuerte" redisplay="true" style="width: 100%" required="true"
+                            requiredMessage="Ups! olvidaste la contraseña"/>
+
+                <br></br>
+                <br></br>
+
+                <div class="form-group row justify-content-center" style="margin: 3%;margin-left: 8%;margin-top: 20px">
+                    <div class="col" >
+                        <p:button href="/index.xhtml" value="Volver"  style="width: 90%;background: #34495E"/>
+                    </div>
+                    <div class="col">
+                        <p:commandButton action="#{administradorBean.eliminarAdministrador}" value="Eliminar"
+                                         update="@form"
+                                         style="width: 90%;background: #34495E"
+                        />
+                    </div>
+                </div>
+                <p:growl showDetail="true"/>
+            </h:form>
+
+        </p:card>
+
+    </ui:define>
+</ui:composition>
+</html>

@@ -8,31 +8,25 @@
 
 <ui:composition template="/WEB-INF/plantilla.xhtml">
 
-    <ui:define name="head">
-    </ui:define>
 
     <ui:define name="title">Libro | Registrar libro</ui:define>
     <ui:define name="content">
 
         <div class="row">
 
-
-            <div class="col">
-                <p:card  style="height: 330px;width: 90%; margin: 10%;text-align:center;margin-bottom: 2em" >
-                    <img src="resources/img/libro.png" alt=""/>
-                    <h6 style="margin-top: 15%">Image</h6>
-                </p:card>
+            <div class="col" style="margin-bottom: 30px">
+                <img src="${pageContext.request.contextPath}/resources/img/Libros.png" alt=""
+                     style="margin-left: 20%;height: 70%;width: 70%; margin-top: 18%;margin-bottom: -30px"/>
             </div>
-
 
 
             <div class="col">
                 <h:form id="crear-libro">
 
                     <p:card styleClass="tarjeta"
-                            style="margin-left: 8%; margin-right: 20%; margin-top: 10%; margin-bottom: 2%; width: 80%;">
+                            style="margin-left: 8%; margin-right: 20%; margin-top: 10%; height: 585px; width: 80%;">
                         <f:facet name="title">
-                            <font color="#34495E" >¡Regístre un libro!</font>
+                            <font color="#34495E" >Regístro de libros</font>
                         </f:facet>
 
                         <h:panelGrid columns="2" cellpadding="3" width="100%">
@@ -52,21 +46,34 @@
                                          required="true"
                                          requiredMessage="El nombre del libro es obligatorio"/>
 
-                            <p:outputLabel for="fecha_libro" value="Fecha:"/>
-                            <p:inputText id="fecha_libro"  style="width: 100%"
-                                        />
+                            <p:outputLabel for="fecha_libro" value="Fecha de publicación:"/>
+                            <p:calendar id="fecha_libro" value="#{libroBean.fechaLibro}"
+                                        required="true"
+                                        requiredMessage="La fecha de publicacion es obligatorio"/>
+
+                            <p:outputLabel for="descripcion_libro" value="Descripción:"/>
+                            <p:inputTextarea styleClass="form-control" id="descripcion_libro" value="#{libroBean.libro.descripcion}" style="width: 100%;resize: none"
+                                             required="true" autoResize="none"
+                                             requiredMessage="La descripción del libro es obligatoria" rows="3"/>
+
+                            <p:outputLabel for="imagenes_libro" value="Imagenes: "/>
+                            <p:fileUpload id="imagenes_libro" listener="#{libroBean.subirImagenes}" mode="advanced"
+                                          multiple="true" sizeLimit="1000000" fileLimit="5"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" skinSimple="true"/>
 
                         </h:panelGrid>
 
-                        <h:panelGrid columns="2" cellpadding="5" width="100%">
+                        <div class="form-group row justify-content-center" style="margin: 3%;margin-left: 8%;margin-top: 40px">
+                            <div class="col" >
+                                <p:button href="/index.xhtml" value="Volver"
+                                          style="width: 90%;background: #34495E"/>
+                            </div>
+                            <div class="col">
+                                <p:commandButton action="#{libroBean.registrarLibro(libroBean.fechaLibro)}" value="Registrar" update="@form"
+                                                 style="background: #34495E;width: 90%"/>
+                            </div>
 
-                            <p:commandButton action="#{libroBean.registrarLibro}" value="Registrar" update="@form"
-                                             style="background: #34495E;width: 200px; margin-left: 15%;margin-top: 5%"/>
-
-                            <p:button href="/index.xhtml" value="Volver"
-                                      style="width: 200px; margin-left: 10%;margin-right: 15%;margin-top: 5%;background: #34495E"/>
-
-                        </h:panelGrid>
+                        </div>
 
                         <p:growl showDetail="true"/>
                     </p:card>

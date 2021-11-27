@@ -1,8 +1,10 @@
 package co.edu.uniquindio.proyecto.servicios;
+
 import co.edu.uniquindio.proyecto.entidades.Libro;
 import co.edu.uniquindio.proyecto.repositorios.LibroRepo;
 import org.springframework.stereotype.Service;
 import java.util.List;
+
 
 @Service
 public class LibroServicioImpl implements LibroServicio{
@@ -30,7 +32,7 @@ public class LibroServicioImpl implements LibroServicio{
     }
 
     @Override
-    public void actualizarLibro(int isbn,Libro libro) throws Exception {
+    public void actualizarLibro(String isbn,Libro libro) throws Exception {
 
         Libro libroObtenido= obtenerLibro(isbn);
 
@@ -38,8 +40,9 @@ public class LibroServicioImpl implements LibroServicio{
 
             libroObtenido.setIsbn(libro.getIsbn());
             libroObtenido.setAutor(libro.getAutor());
-            libroObtenido.setEstado(libro.getEstado());
+            libroObtenido.setEstado(true);
             libroObtenido.setTitulo(libro.getTitulo());
+            libroObtenido.setDescripcion(libro.getDescripcion());
 
             libroRepo.save(libroObtenido);
         }
@@ -47,9 +50,9 @@ public class LibroServicioImpl implements LibroServicio{
     }
 
     @Override
-    public void eliminarLibro(int isbn) throws Exception {
+    public void eliminarLibro(int id) throws Exception {
 
-        Libro libroEncontrado=obtenerLibro(isbn);
+        Libro libroEncontrado=obtenerLibroId(id);
 
         if (libroEncontrado != null){
             libroRepo.delete(libroEncontrado);
@@ -60,7 +63,7 @@ public class LibroServicioImpl implements LibroServicio{
     }
 
     @Override
-    public Libro obtenerLibro(int isbn) throws Exception {
+    public Libro obtenerLibro(String isbn) throws Exception {
 
         Libro libro= libroRepo.findByIsbn(isbn);
 
@@ -69,6 +72,23 @@ public class LibroServicioImpl implements LibroServicio{
         }
 
         return libro;
+    }
+
+    @Override
+    public Libro obtenerLibroId(int id) throws Exception {
+
+        Libro libro= libroRepo.findById(id);
+
+        if (libro==null){
+            throw new Exception("El libro buscado no existe");
+        }
+
+        return libro;
+    }
+
+    @Override
+    public List<Libro> buscarLugares(String cadena) {
+        return libroRepo.busquedaLibrosNombre(cadena);
     }
 
     @Override

@@ -8,9 +8,9 @@ public interface AdministradorServicio {
 
     Administrador registrarAdministrador(Administrador a) throws Exception;
 
-    void actualizarAdministrador(Administrador a,String email,String password) throws Exception;
+    void actualizarAdministrador(String id,Administrador administrador) throws Exception;
 
-    void eliminarAdministrador(String email) throws Exception;
+    void eliminarAdministrador(String email,String password) throws Exception;
 
     Administrador obtenerAdministrador(String id) throws Exception;
 
@@ -20,5 +20,12 @@ public interface AdministradorServicio {
 
     List<Administrador> listarAdministradores();
 
+    List<Administrador> obtenerAdminsRegistrados(String emailAdm);
+
     Administrador obtenerEmailPassword(String email,String password) throws Exception;
+
+    List<Usuario> obtenerUsuariosRegistrados(String emailAdm);
+
+    List<Libro> obtenerLibrosRegistrados(String emailAdm);
 }
+

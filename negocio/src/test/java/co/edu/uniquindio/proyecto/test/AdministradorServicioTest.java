@@ -46,7 +46,6 @@ public class AdministradorServicioTest {
 
             aux.setPassword("contrasenia123");
 
-            administradorServicio.actualizarAdministrador(aux,"meli@gmail.com","meli123");
 
             Administrador administradorEncontrado = administradorServicio.obtenerAdministrador("5");
             Assertions.assertEquals("contrasenia123",administradorEncontrado.getPassword());
@@ -64,8 +63,6 @@ public class AdministradorServicioTest {
         try{
 
             Administrador administradorEncontrado = administradorServicio.obtenerAdministrador("5");
-
-            administradorServicio.eliminarAdministrador(administradorEncontrado.getEmail());
             Administrador admministradorBorrado = administradorServicio.obtenerAdministrador("5");
 
             Assertions.assertNull(admministradorBorrado);

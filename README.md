@@ -47,7 +47,6 @@ IntelliJ  	   -- > https://www.jetbrains.com/es-es/idea/download/  -- Se debe cr
 
 -Diseño de interfaces de lo mencionado anteriormente
 
-###Pendiente
 -El resto crud de libro
 
 -CRUD de reserva

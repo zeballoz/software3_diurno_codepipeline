@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="title">Libro | Detalle</ui:define>
+    <ui:define name="content">
+
+        <div class="row">
+            <div style="width: 60%" class="col">
+
+                <h1 style="margin-left: 60px;margin-top: 28px"><font
+                        face="tahoma">Descripción</font></h1>
+
+                <p:card style="width: 630px;height: 200px; margin-left: 60px;margin-top: 28px">
+                    <h5 align="justify">
+                        <font
+                                face="tahoma">#{detalleLibroBean.libro.descripcion}
+                        </font>
+                    </h5>
+                </p:card>
+
+                <h1 style="margin-left: 60px;margin-top: 28px"><font
+                        face="tahoma">Información</font></h1>
+
+                <p:card style="width: 630px;height: 310px; margin-left: 60px;margin-top: 28px">
+                    <f:facet name="title">
+                        <h2><font
+                                face="tahoma"> #{detalleLibroBean.libro.titulo} </font></h2>
+                    </f:facet>
+
+
+                    <h5 align="justify">
+                        <font
+                                face="tahoma">Autor: #{detalleLibroBean.libro.autor}
+                        </font>
+                    </h5>
+                    <br></br>
+
+                    <h5 align="justify">
+                        <font
+                                face="tahoma">
+                            Isbn: #{detalleLibroBean.libro.isbn}
+                        </font>
+                    </h5>
+                    <br></br>
+                    <h5 align="justify">
+                        <font
+                                face="tahoma">
+                            Fecha publicación: #{detalleLibroBean.libro.fechaPublicacion}
+                        </font>
+                    </h5>
+
+                    <div class="row" align="center" style="margin-top: 30px;margin-right: 10px">
+                        <div class="col">
+                            <p:commandButton rendered="#{seguridadBean.autenticado and seguridadBean.rol=='usuario'}"
+                                             styleClass="ui-button-raised ui-button" value="Reservar"
+                                             onclick="PF('dlg1').show()"
+                                             style="background: #34495E;margin-bottom: 10px;width: 30%"/>
+
+                        </div>
+                    </div>
+
+                </p:card>
+            </div>
+
+
+            <div class="col" style="margin-left: 70px;width: 200px;height: 692px">
+                <br></br>
+
+                <p:card style="width: 32rem; margin-bottom: 2em;height: 692px">
+
+                    <p:galleria value="#{detalleLibroBean.urlImagenes}" var="image" panelWidth="480" panelHeight="550"
+                                showCaption="true" style="display: block;margin-top: 10%">
+                        <p:graphicImage url="/uploads/#{image}" title="Imagenes" style="margin-left: 28%"/>
+                    </p:galleria>
+
+                </p:card>
+            </div>
+        </div>
+
+
+        <h:form>
+            <p:dialog id="dialogo" header="Reserva" widgetVar="dlg1" Height="400px" width="30%" showEffect="fade"
+                      closeOnEscape="true" rendered="#{seguridadBean.autenticado}">
+                <div class="row">
+                    <div class="col">
+                        <p> Para adquirir el libro
+                            <b>#{detalleLibroBean.libro.titulo}</b>, por favor confirma la reserva</p>
+                    </div>
+
+                </div>
+
+
+                <f:facet name="footer">
+                    <p:commandButton style="min-width: 30%; display:block;margin: auto" value="Confirmar"
+                                     action="#{detalleLibroBean.realizarReserva}"
+                                     styleClass="ui-button-raised ui-button-flat"
+                                     update="@form"/>
+
+                    <p:growl showDetail="true"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

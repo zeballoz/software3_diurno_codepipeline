@@ -12,33 +12,41 @@
     <ui:define name="content">
 
         <p:card styleClass="card"
-                style="margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 2%">
+                style="height:380px;margin-left: 30%; margin-right: 30%; margin-top: 2%; margin-bottom: 1%">
             <f:facet name="title">
-                <font color="#34495E" >Lamentamos que te vayas</font>
+                <font color="#34495E" >Eliminación de usuario</font>
             </f:facet>
 
-            <p>Por favor ingresa tu email para eliminar tu cuenta.</p>
+            <p>Por favor ingresa el email y contraseña del usuario que deseas eliminar.</p>
 
             <h:form>
                 <p:outputLabel for="email_usuario" value="Email:"/>
                 <p:inputText id="email_usuario" value="#{administradorBean.usuario.email}" style="width: 100%"
                              required="true"
                              requiredMessage="Ups! olvidaste el email"/>
-
+                <br></br>
+                <br></br>
                 <p:outputLabel for="contrasenia_usuario" value="Contraseña:"/>
                 <p:password id="contrasenia_usuario" value="#{administradorBean.usuario.password}" feedback="true"
                             promptLabel="Ingresa tu contraseña" weakLabel="Débil"
                             goodLabel="Buena" strongLabel="Fuerte" redisplay="true" style="width: 100%" required="true"
                             requiredMessage="Ups! olvidaste la contraseña"/>
 
-                <h:panelGrid id="Botones" columns="2" width="100%">
-                    <p:commandButton action="#{administradorBean.eliminarUsuario}" value="Eliminar"
-                                     update="@form"
-                                     style="width: 100px; margin-left: 40%; margin-top: 5%;background: #34495E"/>
-                    <p:button href="/index.xhtml" value="Volver" style="width: 100px; margin-left: 20%; margin-top: 5%;background: #34495E"/>
-                    <p:growl showDetail="true"/>
-                </h:panelGrid>
+                <br></br>
+                <br></br>
 
+                <div class="form-group row justify-content-center" style="margin: 3%;margin-left: 8%;margin-top: 20px">
+                    <div class="col" >
+                        <p:button href="/index.xhtml" value="Volver"  style="width: 90%;background: #34495E"/>
+                    </div>
+                    <div class="col">
+                        <p:commandButton action="#{administradorBean.eliminarUsuario}" value="Eliminar"
+                                         update="@form"
+                                         style="width: 90%;background: #34495E"
+                        />
+                    </div>
+                </div>
+                <p:growl showDetail="true"/>
             </h:form>
 
         </p:card>

@@ -4,18 +4,6 @@ import co.edu.uniquindio.proyecto.entidades.*;
 import co.edu.uniquindio.proyecto.servicios.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.primefaces.model.chart.*;
-import org.primefaces.model.charts.ChartData;
-import org.primefaces.model.charts.axes.cartesian.CartesianScales;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
-import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
-import org.primefaces.model.charts.bar.BarChartDataSet;
-import org.primefaces.model.charts.bar.BarChartModel;
-import org.primefaces.model.charts.bar.BarChartOptions;
-import org.primefaces.model.charts.optionconfig.animation.Animation;
-import org.primefaces.model.charts.optionconfig.legend.Legend;
-import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
-import org.primefaces.model.charts.optionconfig.title.Title;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -45,6 +32,12 @@ public class AdministradorBean implements Serializable {
     private Administrador administrador;
 
     @Getter @Setter
+    private Administrador administradorAux;
+
+    @Getter @Setter
+    private Administrador administradorB;
+
+    @Getter @Setter
     private Usuario usuario;
 
     @Getter @Setter
@@ -59,13 +52,29 @@ public class AdministradorBean implements Serializable {
     @Getter @Setter
     private List<Ciudad> ciudades;
 
+    @Getter
+    @Setter
+    private List<Usuario> usuariosRegistrados;
+
+    @Getter
+    @Setter
+    private List<Administrador> administradoresRegistrados;
+
+    @Getter
+    @Setter
+    private List<Libro> librosRegistrados;
 
     @PostConstruct
     public void inicializar() {
         this.administrador = obtenerAdministrador();
         this.ciudades = ciudadServicio.listarCiudades();
+        this.usuariosRegistrados = obtenerUsuariosRegistrados();
+        this.librosRegistrados = obtenerLibrosRegistrados();
+        this.administradoresRegistrados = obtenerAdminsRegistrados();
         this.usuario  = new Usuario();
         this.usuarioAux  = new Usuario();
+        this.administradorAux = new Administrador();
+        this.administradorB= new Administrador();
     }
 
     public Administrador obtenerAdministrador(){
@@ -90,15 +99,15 @@ public class AdministradorBean implements Serializable {
 
     }
 
-/**
-    public void registrarUsuario() {
+    public void registrarAdministrador() {
         try {
 
             if (personaLogin != null) {
 
-                usuario.setAdministrador((Administrador) personaLogin);
-                usuarioServicio.registrarUsuario(usuario);
-                FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! te registramos correctamente");
+                administradorAux.setAdministrador((Administrador) personaLogin);
+                administradorServicio.registrarAdministrador(administradorAux);
+
+                FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! el administrador se registro correctamente");
                 FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
             }
 
@@ -108,7 +117,60 @@ public class AdministradorBean implements Serializable {
         }
     }
 
- */
+    public void eliminarAdministrador() {
+
+        try {
+            if (personaLogin != null) {
+
+                administradorServicio.eliminarAdministrador(administradorAux.getEmail(), administradorAux.getPassword());
+                FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! el administrador ha sido eliminado con exito");
+                FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+
+            }
+
+        } catch (Exception e) {
+            FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+        }
+
+    }
+
+    public void actualizarAdministrador(){
+
+        try{
+
+            if(personaLogin!=null){
+
+                administradorServicio.actualizarAdministrador(administradorB.getId(),administradorAux);
+                FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! el usuario se actualizo con exito");
+                FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+
+            }
+
+        }catch(Exception e){
+            FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+
+        }
+    }
+
+    public void registrarUsuario() {
+        try {
+
+            if (personaLogin != null) {
+
+                usuario.setAdministrador((Administrador) personaLogin);
+                usuarioServicio.registrarUsuario(usuario);
+                FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! el usuario se registro correctamente");
+                FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+            }
+
+        } catch (Exception e) {
+            FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
+        }
+    }
+
 
     public void eliminarUsuario(){
 
@@ -135,7 +197,7 @@ public class AdministradorBean implements Serializable {
 
             if(personaLogin!=null){
 
-                usuarioServicio.actualizarUsuario(usuarioAux.getEmail(), usuario);
+                usuarioServicio.actualizarUsuario(usuarioAux.getId(), usuario);
                 FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "¡Super! el usuario se actualizo con exito");
                 FacesContext.getCurrentInstance().addMessage("mensajePersonalizado", facesMsg);
 
@@ -163,4 +225,55 @@ public class AdministradorBean implements Serializable {
 
         return usuarioEncontrado;
     }
+
+    public List<Usuario> obtenerUsuariosRegistrados(){
+
+        List<Usuario> registrados=null;
+
+        if (personaLogin!=null){
+
+            try{
+                registrados= administradorServicio.obtenerUsuariosRegistrados(administrador.getEmail());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return registrados;
+    }
+
+
+
+    public List<Administrador> obtenerAdminsRegistrados(){
+
+        List<Administrador> registrados=null;
+
+        if (personaLogin!=null){
+
+            try{
+                registrados = administradorServicio.obtenerAdminsRegistrados(personaLogin.getEmail());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return registrados;
+    }
+
+
+    public List<Libro> obtenerLibrosRegistrados(){
+
+        List<Libro> registrados=null;
+
+        if (personaLogin!=null){
+
+            try{
+                registrados= administradorServicio.obtenerLibrosRegistrados(administrador.getEmail());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return registrados;
+    }
+
 }

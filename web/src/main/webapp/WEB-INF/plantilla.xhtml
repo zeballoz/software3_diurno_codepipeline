@@ -23,7 +23,7 @@
         <ui:insert name="header">
             <nav class="navbar navbar-expand-lg py-3 navbar-dark " style="background-color: #34495E;" >
                 <div class="container">
-                    <a class="navbar-brand" ><i class="pi pi-book"></i> Biblioteca</a>
+                    <a class="navbar-brand" href="/"><i class="pi pi-book"></i> Biblioteca</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarColor02"
                             aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,19 +31,11 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarColor02">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">
-                                <i class="pi pi-home"/>
-                                    Inicio
-                                </a>
-                            </li>
-
-
 
                             <li class="nav-item"
                                 jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol=='usuario'}">
                                 <a class="nav-link active" aria-current="page"
-                                   jsf:rendered="#{seguridadBean.autenticado}">
+                                   jsf:rendered="#{seguridadBean.autenticado}" href="/usuario/perfilUsuario.xhtml">
                                     <i class="pi pi-id-card"/>
                                     Perfil
                                 </a>
@@ -52,7 +44,7 @@
                             <li class="nav-item"
                                 jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol=='admin'}">
                                 <a class="nav-link active" aria-current="page"
-                                   jsf:rendered="#{seguridadBean.autenticado}">
+                                   jsf:rendered="#{seguridadBean.autenticado}" href="/administrador/perfilAdministrador.xhtml">
                                     <i class="pi pi-id-card"/>
                                     Perfil
                                 </a>
@@ -70,8 +62,8 @@
                                     <li><a class="dropdown-item" href="/administrador/registrarUsuario.xhtml"
                                            jsf:rendered="#{seguridadBean.autenticado}">
                                         <i class="pi pi-user-plus" style="margin-right: 15px"/>
-                                             Registrarse
-                                        </a>
+                                        Registrarse
+                                    </a>
                                     </li>
                                     <li><a class="dropdown-item" href="/administrador/eliminarUsuario.xhtml"
                                            jsf:rendered="#{seguridadBean.autenticado}"><i class="pi pi-user-minus"
@@ -94,10 +86,36 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown_libro">
                                     <li><a class="dropdown-item" href="/administrador/crearLibro.xhtml"><i
                                             class="pi pi-plus-circle" style="margin-right: 15px"/>Registrar</a></li>
-                                    <li><a class="dropdown-item" ><i
+                                    <li><a class="dropdown-item" href="/administrador/eliminarLibro.xhtml"><i
                                             class="pi pi-minus-circle" style="margin-right: 15px"/>Eliminar</a></li>
-                                    <li><a class="dropdown-item" ><i
+                                    <li><a class="dropdown-item" href="/administrador/actualizarLibro.xhtml" ><i
                                             class="pi pi-pencil" style="margin-right: 15px"/>Actualizar</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown"
+                                jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol=='admin'}">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_admin" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="pi pi-users"/>
+                                    Administradores
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    <li><a class="dropdown-item" href="/administrador/registrarAdministrador.xhtml"
+                                           jsf:rendered="#{seguridadBean.autenticado}">
+                                        <i class="pi pi-user-plus" style="margin-right: 15px"/>
+                                        Registrarse
+                                    </a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="/administrador/eliminarAdministrador.xhtml"
+                                           jsf:rendered="#{seguridadBean.autenticado}"><i class="pi pi-user-minus"
+                                                                                          style="margin-right: 15px"/>Eliminar</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="/administrador/actualizarAdministrador.xhtml"
+                                           jsf:rendered="#{seguridadBean.autenticado}"><i class="pi pi-user-edit"
+                                                                                          style="margin-right: 15px"/>Actualizar</a>
                                     </li>
                                 </ul>
                             </li>
@@ -138,55 +156,20 @@
 
                         <div class="col-2">
                             <div class="fotox">
-                                <img src="resources/img/user.png" alt=""/>
+                                <img src="resources/img/user.png" alt="" style="margin-top: 60%"/>
                             </div>
                         </div>
                     </div>
 
 
                     <f:facet name="footer">
-                        <p:commandButton style="min-width: 30%" value="Iniciar" action="#{seguridadBean.iniciarSesion}"
-                                         styleClass="ui-button-raised ui-button-success ui-button-flat"
-                                         update="@form" icon="pi pi-sign-in" iconPos="left"/>
-                        <p:commandButton style="min-width: 30%" value="Recuperar contraseña"
-                                         styleClass="ui-button-raised ui-button-secondary ui-button-flat" update="@form"
-                                         onclick="PF('dlg2').show()"/>
-                        <p:growl showDetail="true" for="login-bean"/>
-                    </f:facet>
-                </p:dialog>
-            </h:form>
-
-
-            <h:form>
-                <p:dialog header="Recupera tu cuenta" widgetVar="dlg2" Height="400px" width="40%" showEffect="fade"
-                          closeOnEscape="true">
-
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h5>Correo electronico</h5>
-                            <p:inputText id="correo" value="#{seguridadBean.emailR}" styleClass="p-d-block"
-                                         style="width: 100%"
-                                         required="true" requiredMessage="¡Ups! olvidaste el email"/>
-                        </div>
-
-                        <div class="col-2">
-                            <div class="fotox">
-                                <img src="resources/img/contrasena.png" alt=""/>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <f:facet name="footer">
-                        <p:commandButton style="min-width: 30%" value="Recuperar contraseña"
-                                         action="#{seguridadBean.buscarPorEmail}"
+                        <p:commandButton style="display: block;margin: auto;min-width: 30%" value="Iniciar" action="#{seguridadBean.iniciarSesion}"
                                          styleClass="ui-button-raised ui-button-success ui-button-flat"
                                          update="@form" icon="pi pi-sign-in" iconPos="left"/>
                         <p:growl showDetail="true" for="login-bean"/>
                     </f:facet>
                 </p:dialog>
             </h:form>
-
 
         </ui:insert>
     </div>
